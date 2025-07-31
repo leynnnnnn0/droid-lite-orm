@@ -5,8 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ public class ProductDetails extends AppCompatActivity {
     TextView name, price, description;
     Intent intent;
     Product productDb;
+    ImageButton edit, delete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,10 @@ public class ProductDetails extends AppCompatActivity {
         price = findViewById(R.id.price);
         description = findViewById(R.id.description);
         intent = getIntent();
+        edit = findViewById(R.id.edit);
+        delete = findViewById(R.id.delete);
+
+
 
         productDb = new Product(this);
         Product product = productDb.mapCursor(productDb.findById(intent.getIntExtra("id", 0)));
@@ -46,10 +53,29 @@ public class ProductDetails extends AppCompatActivity {
         description.setText(product.getDescription());
         price.setText(String.valueOf(product.getPrice()));
 
+        edit.setOnClickListener(v -> {
+            Intent editIntent = new Intent(this, EditProduct.class);
+            editIntent.putExtra("id", product.getId());
+            startActivity(editIntent);
+        });
+
+        delete.setOnClickListener(v -> {
+            toast(productDb.delete(product.getId()), "Deleted Successfully.");
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void toast(Boolean result, String message)
+    {
+        if(result) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+        }
     }
 }

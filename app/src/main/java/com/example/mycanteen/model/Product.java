@@ -1,6 +1,8 @@
 package com.example.mycanteen.model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.example.mycanteen.database.DBHelper;
 
@@ -81,6 +83,12 @@ public class Product extends DBHelper<Product> {
 
     public String getDescription() {
         return description;
+    }
+
+    public Bitmap getBitmapImage()
+    {
+        byte[] imageBytes = this.getImage();
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
     }
 
     public void setDescription(String description) {

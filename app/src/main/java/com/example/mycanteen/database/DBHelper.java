@@ -96,7 +96,7 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
     }
 
 
-    public Boolean update(HashMap<String, Object> data, String id){
+    public Boolean update(HashMap<String, Object> data, int id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         for (Map.Entry<String, Object> entry : data.entrySet()) {
@@ -121,18 +121,18 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
                 throw new IllegalArgumentException("Unsupported data type for column: " + key);
             }
         }
-        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName +" WHERE id = ?", new String[]{id});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName +" WHERE id = ?", new String[]{String.valueOf(id)});
         if (cursor.getCount() == 0) return false;
-        long result = db.update(tableName, contentValues, "id = ?", new String[]{id});
+        long result = db.update(tableName, contentValues, "id = ?", new String[]{String.valueOf(id)});
         cursor.close();
         return result != -1;
     }
 
-    public Boolean delete(String id){
+    public Boolean delete(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + id + " WHERE id = ?", new String[]{id});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " WHERE id = ?", new String[]{String.valueOf(id)});
         if (cursor.getCount() == 0) return false;
-        long result = db.delete(tableName, "id = ?", new String[]{id});
+        long result = db.delete(tableName, "id = ?", new String[]{String.valueOf(id)});
         cursor.close();
         return result != -1;
     }
