@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycanteen.AddProduct;
+import com.example.mycanteen.Login;
 import com.example.mycanteen.R;
 import com.example.mycanteen.adapter.ProductAdapter;
 import com.example.mycanteen.databinding.FragmentHomeBinding;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    ImageButton addButton;
+    ImageButton addButton, logout;
     private FragmentHomeBinding binding;
 
     RecyclerView allProductsRecyclerView;
@@ -39,9 +40,14 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        if(CurrentUser.getCurrentUserRole(requireContext()).equals("user")){
-            addButton.setVisibility(View.GONE);
-        }
+
+
+        logout = root.findViewById(R.id.logout);
+        logout.setOnClickListener(v -> {
+            CurrentUser.clearCurrentUserData(requireContext());
+            startActivity(new Intent(requireContext(), Login.class));
+        });
+
 
         Log.d("userRole", String.valueOf(CurrentUser.getCurrentUserRole(requireContext())));
         addButton = root.findViewById(R.id.addButton);
@@ -49,6 +55,7 @@ public class HomeFragment extends Fragment {
         addButton.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), AddProduct.class));
         });
+
 
         if(CurrentUser.getCurrentUserRole(requireContext()).equals("user")){
             addButton.setVisibility(View.GONE);

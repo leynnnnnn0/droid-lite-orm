@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ public class ProductDetails extends AppCompatActivity {
     Intent intent;
     Product productDb;
     ImageButton edit, delete;
+    Button addToCartButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +41,17 @@ public class ProductDetails extends AppCompatActivity {
         intent = getIntent();
         edit = findViewById(R.id.edit);
         delete = findViewById(R.id.delete);
+        addToCartButton = findViewById(R.id.addToCartButton);
 
 
         if(CurrentUser.getCurrentUserRole(this).equals("user")){
             delete.setVisibility(View.GONE);
             edit.setVisibility(View.GONE);
         }
+        if(CurrentUser.getCurrentUserRole(this).equals("admin")){
+            addToCartButton.setVisibility(View.GONE);
+        }
+
         productDb = new Product(this);
         Product product = productDb.mapCursor(productDb.findById(intent.getIntExtra("id", 0)));
 

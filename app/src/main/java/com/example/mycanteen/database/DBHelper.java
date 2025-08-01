@@ -10,6 +10,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.mycanteen.model.Cart;
+import com.example.mycanteen.model.CartProduct;
 import com.example.mycanteen.model.Product;
 import com.example.mycanteen.model.User;
 import com.example.mycanteen.service.CurrentUser;
@@ -28,7 +30,7 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
 
     protected Context context;
     public DBHelper(Context context, String tableName) {
-        super(context, "my_canteen.db", null, 3);
+        super(context, "my_canteen.db", null, 5);
         wheres = new HashMap<>();
         this.context = context;
         this.tableName = tableName;
@@ -36,19 +38,32 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        CurrentUser.setCurrentUserId(this.context, -1);
+        db.execSQL("PRAGMA foreign_keys = ON;");
         db.execSQL(createTableQuery("users", User.schema()));
         db.execSQL(createTableQuery("products", Product.schema()));
+        db.execSQL(createTableQuery("carts", Cart.schema()));
+        db.execSQL(createTableQuery("cart_products", CartProduct.schema()));
 
-        db.execSQL("INSERT INTO users(username, email, password, role) VALUES ('admin', 'admin@gmail.com', 'admin1234', 'admin')");
+        db.execSQL("INSERT INTO users(username, email, password, role) VALUES ('admin', 'admin@gmail.com', 'admin1234', 'admin'), ('user', 'user@gmail.com', 'password', 'user')");
     }
 
     private String createTableQuery(String tableName, LinkedHashMap<String, String> columns) {
         StringBuilder builder = new StringBuilder();
         builder.append("CREATE TABLE IF NOT EXISTS ").append(tableName).append(" (");
+
+        String foreignKeys = null;
         for (Map.Entry<String, String> entry : columns.entrySet()) {
+            if (entry.getKey().equals("FOREIGN_KEYS")) {
+                foreignKeys = entry.getValue();
+                continue;
+            }
             builder.append(entry.getKey()).append(" ").append(entry.getValue()).append(", ");
         }
+
+        if (foreignKeys != null) {
+            builder.append(foreignKeys).append(", ");
+        }
+
         builder.setLength(builder.length() - 2);
         builder.append(");");
         return builder.toString();
@@ -59,6 +74,8 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + "users");
         db.execSQL("DROP TABLE IF EXISTS " + "products");
+        db.execSQL("DROP TABLE IF EXISTS " + "carts");
+        db.execSQL("DROP TABLE IF EXISTS " + "cart_products");
         onCreate(db);
     }
 
