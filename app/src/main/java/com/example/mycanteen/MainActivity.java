@@ -2,6 +2,7 @@ package com.example.mycanteen;
 
 import android.os.Bundle;
 
+import com.example.mycanteen.service.CurrentUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

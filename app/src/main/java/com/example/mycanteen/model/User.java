@@ -15,6 +15,7 @@ public class User extends DBHelper<User> {
     public int id;
     public String username;
     public String email;
+    public String role;
     Context context;
 
     public User(Context context)  {
@@ -31,6 +32,7 @@ public class User extends DBHelper<User> {
                 "id",
                 "username",
                 "email",
+                "role"
         };
     }
 
@@ -47,5 +49,29 @@ public class User extends DBHelper<User> {
     @Override
     public LinkedHashMap<String, String> columns() {
        return schema();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

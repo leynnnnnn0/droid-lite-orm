@@ -1,5 +1,6 @@
 package com.example.mycanteen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mycanteen.model.User;
+import com.example.mycanteen.service.CurrentUser;
 
 import java.util.HashMap;
 
@@ -31,6 +33,9 @@ public class Register extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        if(CurrentUser.getCurrentUserId(this) != -1)
+            startActivity(new Intent(this, MainActivity.class));
 
         username = findViewById(R.id.username);
         usernameError = findViewById(R.id.usernameError);

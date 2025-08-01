@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mycanteen.model.Product;
+import com.example.mycanteen.service.CurrentUser;
 
 public class ProductDetails extends AppCompatActivity {
     ImageView image;
@@ -39,7 +41,10 @@ public class ProductDetails extends AppCompatActivity {
         delete = findViewById(R.id.delete);
 
 
-
+        if(CurrentUser.getCurrentUserRole(this).equals("user")){
+            delete.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
+        }
         productDb = new Product(this);
         Product product = productDb.mapCursor(productDb.findById(intent.getIntExtra("id", 0)));
 

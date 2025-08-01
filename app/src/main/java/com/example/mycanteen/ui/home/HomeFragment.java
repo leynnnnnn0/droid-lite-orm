@@ -20,6 +20,7 @@ import com.example.mycanteen.R;
 import com.example.mycanteen.adapter.ProductAdapter;
 import com.example.mycanteen.databinding.FragmentHomeBinding;
 import com.example.mycanteen.model.Product;
+import com.example.mycanteen.service.CurrentUser;
 
 import java.util.ArrayList;
 
@@ -38,11 +39,20 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        if(CurrentUser.getCurrentUserRole(requireContext()).equals("user")){
+            addButton.setVisibility(View.GONE);
+        }
+
+        Log.d("userRole", String.valueOf(CurrentUser.getCurrentUserRole(requireContext())));
         addButton = root.findViewById(R.id.addButton);
 
         addButton.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), AddProduct.class));
         });
+
+        if(CurrentUser.getCurrentUserRole(requireContext()).equals("user")){
+            addButton.setVisibility(View.GONE);
+        }
 
 
         allProductsRecyclerView = root.findViewById(R.id.allProductsRecyclerView);

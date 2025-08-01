@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.mycanteen.model.Product;
 import com.example.mycanteen.model.User;
+import com.example.mycanteen.service.CurrentUser;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
 
     protected Context context;
     public DBHelper(Context context, String tableName) {
-        super(context, "my_canteen.db", null, 2);
+        super(context, "my_canteen.db", null, 3);
         wheres = new HashMap<>();
         this.context = context;
         this.tableName = tableName;
@@ -35,8 +36,11 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        CurrentUser.setCurrentUserId(this.context, -1);
         db.execSQL(createTableQuery("users", User.schema()));
         db.execSQL(createTableQuery("products", Product.schema()));
+
+        db.execSQL("INSERT INTO users(username, email, password, role) VALUES ('admin', 'admin@gmail.com', 'admin1234', 'admin')");
     }
 
     private String createTableQuery(String tableName, LinkedHashMap<String, String> columns) {
