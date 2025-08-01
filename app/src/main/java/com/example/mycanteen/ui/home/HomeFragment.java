@@ -16,10 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mycanteen.AddProduct;
+import com.example.mycanteen.Cart;
 import com.example.mycanteen.Login;
 import com.example.mycanteen.R;
 import com.example.mycanteen.adapter.ProductAdapter;
 import com.example.mycanteen.databinding.FragmentHomeBinding;
+import com.example.mycanteen.model.CartProduct;
 import com.example.mycanteen.model.Product;
 import com.example.mycanteen.service.CurrentUser;
 
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    ImageButton addButton, logout;
+    ImageButton addButton, logout, cart;
     private FragmentHomeBinding binding;
 
     RecyclerView allProductsRecyclerView;
@@ -40,6 +42,10 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        cart = root.findViewById(R.id.cart);
+        cart.setOnClickListener(v-> {
+            startActivity(new Intent(requireContext(), Cart.class));
+        });
 
 
         logout = root.findViewById(R.id.logout);
@@ -49,7 +55,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-        Log.d("userRole", String.valueOf(CurrentUser.getCurrentUserRole(requireContext())));
         addButton = root.findViewById(R.id.addButton);
 
         addButton.setOnClickListener(v -> {

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.mycanteen.database.DBHelper;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Cart extends DBHelper<Cart> {
@@ -30,6 +31,11 @@ public class Cart extends DBHelper<Cart> {
     @Override
     public LinkedHashMap<String, String> columns() {
         return schema();
+    }
+
+    @Override
+    public HashMap<String, Class<? extends DBHelper<?>>> relations() {
+        return null;
     }
 
     public int getId() {

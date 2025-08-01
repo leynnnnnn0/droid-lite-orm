@@ -1,15 +1,13 @@
 package com.example.mycanteen.model;
 
 import android.content.Context;
-import android.database.Cursor;
 
-import com.example.mycanteen.database.BindableModel;
 import com.example.mycanteen.database.DBHelper;
 
-import java.lang.reflect.Field;
-import java.util.Collections;
+
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
+
 
 public class User extends DBHelper<User> {
     public int id;
@@ -21,8 +19,6 @@ public class User extends DBHelper<User> {
     public User(Context context)  {
         super(context, "users");
         this.context = context;
-
-
     }
 
 
@@ -49,6 +45,11 @@ public class User extends DBHelper<User> {
     @Override
     public LinkedHashMap<String, String> columns() {
        return schema();
+    }
+
+    @Override
+    public HashMap<String, Class<? extends DBHelper<?>>> relations() {
+        return null;
     }
 
     public int getId() {

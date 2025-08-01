@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.mycanteen.database.DBHelper;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class CartProduct extends DBHelper<CartProduct> {
@@ -11,6 +12,10 @@ public class CartProduct extends DBHelper<CartProduct> {
     public int cart_id;
     public int product_id;
     public int quantity;
+
+    public Cart cart;
+
+    public Product product;
     public CartProduct(Context context) {
         super(context, "cart_products");
     }
@@ -36,6 +41,15 @@ public class CartProduct extends DBHelper<CartProduct> {
     public LinkedHashMap<String, String> columns() {
         return schema();
     }
+
+    @Override
+    public HashMap<String, Class<? extends DBHelper<?>>> relations() {
+        HashMap<String, Class<? extends DBHelper<?>>> map = new HashMap<>();
+        map.put("product", Product.class);
+        map.put("cart", Cart.class);
+        return map;
+    }
+
 
     public int getId() {
         return id;
@@ -67,5 +81,21 @@ public class CartProduct extends DBHelper<CartProduct> {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

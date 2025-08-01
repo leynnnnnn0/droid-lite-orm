@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import com.example.mycanteen.database.DBHelper;
 
 import java.sql.Blob;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Product extends DBHelper<Product> {
@@ -47,6 +48,11 @@ public class Product extends DBHelper<Product> {
     @Override
     public LinkedHashMap<String, String> columns() {
         return schema();
+    }
+
+    @Override
+    public HashMap<String, Class<? extends DBHelper<?>>> relations() {
+        return null;
     }
 
     public int getId() {

@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,14 +18,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mycanteen.model.Cart;
+import com.example.mycanteen.model.CartProduct;
 import com.example.mycanteen.model.Product;
 import com.example.mycanteen.service.CurrentUser;
+import com.example.mycanteen.service.Toast;
+
+import java.util.HashMap;
 
 public class ProductDetails extends AppCompatActivity {
     ImageView image;
     TextView name, price, description;
     Intent intent;
     Product productDb;
+    Cart cartDb;
+    CartProduct cartProductDb;
     ImageButton edit, delete;
     Button addToCartButton;
     @Override
@@ -52,7 +59,12 @@ public class ProductDetails extends AppCompatActivity {
             addToCartButton.setVisibility(View.GONE);
         }
 
+
+
         productDb = new Product(this);
+        cartDb = new Cart(this);
+        cartProductDb = new CartProduct(this);
+
         Product product = productDb.mapCursor(productDb.findById(intent.getIntExtra("id", 0)));
 
         byte[] imageBytes = product.getImage();
@@ -72,7 +84,41 @@ public class ProductDetails extends AppCompatActivity {
         });
 
         delete.setOnClickListener(v -> {
-            toast(productDb.delete(product.getId()), "Deleted Successfully.");
+            productDb.delete(product.getId());
+            Toast.success(this, "Deleted Successfully.");
+        });
+
+        addToCartButton.setOnClickListener(view -> {
+            Cart cart = cartDb.mapCursor(cartDb.where("user_id",  String.valueOf(CurrentUser.getCurrentUserId(this))).first());
+            if(cart != null){
+                CartProduct cartProduct = cartProductDb.mapCursor(cartProductDb
+                        .where("cart_id",  String.valueOf(cart.getId()))
+                        .where("product_id", String.valueOf(product.getId()))
+                        .first());
+                if(cartProduct != null){
+                    Toast.success(this, "You already have this on your cart.");
+                }else {
+                    cartProductDb.create(new HashMap<>() {{
+                        put("cart_id", cart.getId());
+                        put("product_id", product.getId());
+                        put("quantity", 1);
+                    }});
+                    Toast.success(this, "Added to cart.");
+                }
+            }
+            else {
+                int id = CurrentUser.getCurrentUserId(this);
+                cartDb.create(new HashMap<>(){{
+                    put("user_id", id);
+                }});
+                Cart newCart = cartDb.mapCursor(cartDb.where("user_id",  String.valueOf(CurrentUser.getCurrentUserId(this))).first());
+                cartProductDb.create(new HashMap<>() {{
+                    put("cart_id", newCart.getId());
+                    put("product_id", product.getId());
+                    put("quantity", 1);
+                }});
+                Toast.success(this, "Added to cart.");
+            }
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -82,12 +128,5 @@ public class ProductDetails extends AppCompatActivity {
         });
     }
 
-    public void toast(Boolean result, String message)
-    {
-        if(result) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-        }
-    }
+
 }
