@@ -96,8 +96,6 @@ List<User> users = new User().with("posts").get();
 ### 4. Update and Delete
 
 ```java
-
-```
 product.update(new HashMap<>(){{
     put("image", imageViewToByte(image));
     put("name", productName);
@@ -107,8 +105,7 @@ product.update(new HashMap<>(){{
 }}, product.getId());
 
 product.delete(product.getId());
-
----
+```
 
 ## 📐 Naming Conventions
 
