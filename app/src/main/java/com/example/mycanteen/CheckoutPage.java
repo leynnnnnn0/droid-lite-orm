@@ -2,7 +2,6 @@ package com.example.mycanteen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -19,18 +18,17 @@ import com.example.mycanteen.model.Product;
 
 import java.util.ArrayList;
 
-public class Cart extends AppCompatActivity {
-
+public class CheckoutPage extends AppCompatActivity {
     CartProduct cartProductDb;
 
     RecyclerView cartProductsRecyclerView;
     CartProductAdapter cartProductAdapter;
-    Button checkout;
+    Button placeOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.activity_checkout_page);
 
         cartProductDb = new CartProduct(this);
         cartProductsRecyclerView = findViewById(R.id.cartProductsRecyclerView);
@@ -43,10 +41,10 @@ public class Cart extends AppCompatActivity {
         cartProductsRecyclerView.setHasFixedSize(true);
         cartProductsRecyclerView.setAdapter(cartProductAdapter);
 
-        checkout = findViewById(R.id.checkout);
+        placeOrder = findViewById(R.id.placeOrder);
 
-        checkout.setOnClickListener(v -> {
-            startActivity(new Intent(this, CheckoutPage.class));
+        placeOrder.setOnClickListener(v -> {
+
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

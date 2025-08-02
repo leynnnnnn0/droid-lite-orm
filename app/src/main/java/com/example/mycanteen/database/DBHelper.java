@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 
 import com.example.mycanteen.model.Cart;
 import com.example.mycanteen.model.CartProduct;
+import com.example.mycanteen.model.Order;
+import com.example.mycanteen.model.OrderProduct;
 import com.example.mycanteen.model.Product;
 import com.example.mycanteen.model.User;
 import com.example.mycanteen.service.CurrentUser;
@@ -47,6 +49,8 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
         db.execSQL(createTableQuery("products", Product.schema()));
         db.execSQL(createTableQuery("carts", Cart.schema()));
         db.execSQL(createTableQuery("cart_products", CartProduct.schema()));
+        db.execSQL(createTableQuery("orders", Order.schema()));
+        db.execSQL(createTableQuery("order_products", OrderProduct.schema()));
 
         db.execSQL("INSERT INTO users(username, email, password, role) VALUES ('admin', 'admin@gmail.com', 'admin1234', 'admin'), ('user', 'user@gmail.com', 'password', 'user')");
     }
@@ -80,6 +84,8 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + "products");
         db.execSQL("DROP TABLE IF EXISTS " + "carts");
         db.execSQL("DROP TABLE IF EXISTS " + "cart_products");
+        db.execSQL("DROP TABLE IF EXISTS " + "orders");
+        db.execSQL("DROP TABLE IF EXISTS " + "order_products");
         onCreate(db);
     }
 
