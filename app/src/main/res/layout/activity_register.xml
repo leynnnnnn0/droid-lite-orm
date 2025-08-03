@@ -111,6 +111,12 @@
             android:backgroundTint="@color/black"
             android:text="Register" />
 
+        <TextView
+            android:id="@+id/goToLoginPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

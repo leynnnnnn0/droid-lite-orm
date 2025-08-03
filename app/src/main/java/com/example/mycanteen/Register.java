@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class Register extends AppCompatActivity {
 
     EditText username, email, password;
-    TextView usernameError, emailError, passwordError;
+    TextView usernameError, emailError, passwordError, goToLoginPage;
     Button register;
     User userDb;
     @Override
@@ -45,6 +45,11 @@ public class Register extends AppCompatActivity {
         passwordError = findViewById(R.id.passwordError);
         register = findViewById(R.id.register);
         userDb = new User(this);
+        goToLoginPage = findViewById(R.id.goToLoginPage);
+
+        goToLoginPage.setOnClickListener(v -> {
+            startActivity(new Intent(this, Login.class));
+        });
 
 
         register.setOnClickListener(v -> {

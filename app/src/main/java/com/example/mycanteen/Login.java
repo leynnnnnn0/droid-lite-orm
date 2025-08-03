@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Login extends AppCompatActivity {
     EditText email, password;
-    TextView emailError ,passwordError;
+    TextView emailError ,passwordError, goToRegisterPage;
     Button login;
     User userDb;
     @Override
@@ -46,6 +46,13 @@ public class Login extends AppCompatActivity {
         emailError = findViewById(R.id.emailError);
         login = findViewById(R.id.login);
         userDb = new User(this);
+
+        goToRegisterPage = findViewById(R.id.goToRegisterPage);
+
+        goToRegisterPage.setOnClickListener(v -> {
+            startActivity(new Intent(this, Register.class));
+        });
+
 
         login.setOnClickListener(v -> {
             String userEmail = email.getText().toString().trim();

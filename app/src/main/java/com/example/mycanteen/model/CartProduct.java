@@ -33,7 +33,10 @@ public class CartProduct extends DBHelper<CartProduct> {
         columns.put("quantity", "INTEGER");
         columns.put("cart_id", "INTEGER");
         columns.put("product_id", "INTEGER");
-        columns.put("FOREIGN_KEYS", "FOREIGN KEY(cart_id) REFERENCES carts(id), FOREIGN KEY(product_id) REFERENCES products(id)");
+        columns.put("FOREIGN_KEYS",
+                "FOREIGN KEY(cart_id) REFERENCES carts(id) ON DELETE CASCADE, " +
+                        "FOREIGN KEY(product_id) REFERENCES products(id)"
+        );
         return columns;
     }
 

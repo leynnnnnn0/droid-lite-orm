@@ -35,13 +35,13 @@ public abstract class DBHelper<T extends DBHelper<T>> extends SQLiteOpenHelper {
 
     protected Context context;
     public DBHelper(Context context, String tableName) {
-        super(context, "my_canteen.db", null, 5);
+        super(context, "my_canteen.db", null, 6);
         wheres = new HashMap<>();
         withs = new LinkedList<>();
         this.context = context;
         this.tableName = tableName;
     }
-
+// Create and update should return an object
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("PRAGMA foreign_keys = ON;");
